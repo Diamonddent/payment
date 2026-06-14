@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Payment Request — Diamond Dent Trading Co</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --primary:#1a2332;
+  --secondary:#2d3a4a;
+  --accent:#6366f1;
+  --accent-light:#8183f3;
+  --success:#10b981;
+  --warning:#f59e0b;
+  --error:#ef4444;
+  --gray-50:#f8fafc;
+  --gray-100:#f1f5f9;
+  --gray-200:#e2e8f0;
+  --gray-300:#cbd5e1;
+  --gray-400:#94a3b8;
+  --gray-600:#475569;
+  --gray-800:#1e293b;
+  --white:#ffffff;
+  --shadow-sm:0 1px 2px 0 rgba(0,0,0,0.05);
+  --shadow-md:0 4px 6px -1px rgba(0,0,0,0.1);
+  --shadow-lg:0 10px 15px -3px rgba(0,0,0,0.1);
+  --shadow-xl:0 20px 25px -5px rgba(0,0,0,0.1);
+}
+
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',sans-serif;
+  background:linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height:100vh;
+  padding:20px;
+}
+
+/* HEADER */
+header{
+  background:rgba(255,255,255,0.95);
+  backdrop-filter:blur(10px);
+  padding:16px 32px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:sticky;
+  top:0;
+  z-index:100;
+  border-radius:16px;
+  margin-bottom:24px;
+  box-shadow:var(--shadow-lg);
+  border:1px solid rgba(255,255,255,0.2);
+}
+
+.logo-area{display:flex;align-items:center;gap:12px}
+.logo-icon{
+  width:48px;
+  height:48px;
+  background: #519ac3;
+  border-radius:12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  font-weight:800;
+  color:var(--white)
+}
+.logo-img{
+  height:48px;
+  width:auto;
+  object-fit:contain;
+}
+.logo-text span{
+  font-size:20px;
+  font-weight:800;
+  color:var(--primary);
+  letter-spacing:-0.5px;
+}
+.logo-text small{
+  font-size:11px;
+  color:var(--gray-400);
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+nav{display:flex;gap:12px}
+nav button{
+  background:transparent;
+  border:none;
+  padding:10px 24px;
+  border-radius:12px;
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.2s;
+  color:var(--gray-600);
+}
+nav button:hover{
+  background: #519ac3;;
+  color:var(--accent);
+}
+nav button.active{
+  background:var(--accent);
+  color:var(--white);
+  box-shadow:var(--shadow-md);
+}
+
+/* TABS */
+.tab-content{display:none}
+.tab-content.active{display:block}
+
+/* PAGE */
+.page{max-width:1000px;margin:0 auto}
+
+/* CARD */
+.form-card{
+  background:var(--white);
+  border-radius:24px;
+  box-shadow:var(--shadow-xl);
+  overflow:hidden;
+  animation:fadeUp 0.5s ease;
+  display:flex;
+  flex-direction:column;
+  min-height:80vh;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* REMOVED DARK BACKGROUND FROM HEADER */
+.form-header{
+  background:var(--white);
+  padding:32px 40px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-shrink:0;
+  border-bottom:2px solid var(--gray-200);
+}
+.company-brand{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.company-logo{
+  height:60px;
+  width:auto;
+  object-fit:contain;
+  border-radius:0px;
+}
+.form-header h1{
+  font-size:28px;
+  font-weight:800;
+  color:var(--primary);
+  letter-spacing:-0.5px;
+}
+.req-badge{
+  background: #519ac3;;
+  padding:8px 20px;
+  border-radius:40px;
+  font-size:14px;
+  font-weight:600;
+  color:var(--white);
+  box-shadow:var(--shadow-sm);
+}
+
+.form-body{
+  padding:40px;
+  flex:1;
+}
+
+/* SECTION */
+.section-title{
+  font-size:13px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  color:#519ac3;
+  margin:32px 0 20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.section-title:first-child{margin-top:0}
+.section-title i{font-size:16px}
+
+/* GRID */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px}
+.span-2{grid-column:span 2}
+.span-3{grid-column:span 3}
+
+/* FIELD */
+.field{display:flex;flex-direction:column;gap:8px}
+label{
+  font-size:12px;
+  font-weight:600;
+  color:#519ac3;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+label i{font-size:12px;color:var(--accent);}
+input,select,textarea{
+  width:100%;
+  background:var(--gray-50);
+  border:2px solid var(--gray-200);
+  border-radius:12px;
+  padding:12px 16px;
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  color:var(--gray-800);
+  transition:all 0.2s;
+  outline:none;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(99,102,241,0.1);
+  background:var(--white);
+}
+textarea{resize:vertical;min-height:80px}
+input[readonly]{
+  background:var(--gray-100);
+  color:var(--gray-600);
+  cursor:default;
+  border-color:var(--gray-200);
+}
+
+/* BENEFICIARY DROPDOWN */
+.ben-wrap{position:relative}
+.ben-dropdown{
+  position:absolute;
+  top:calc(100% + 4px);
+  left:0;
+  right:0;
+  background:var(--white);
+  border:2px solid var(--gray-200);
+  border-radius:12px;
+  box-shadow:var(--shadow-lg);
+  z-index:50;
+  max-height:260px;
+  overflow-y:auto;
+  display:none;
+}
+.ben-dropdown.open{display:block}
+.ben-option{
+  padding:14px 16px;
+  cursor:pointer;
+  font-size:14px;
+  border-bottom:1px solid var(--gray-100);
+  transition:background 0.15s;
+}
+.ben-option:last-child{border-bottom:none}
+.ben-option:hover{background:var(--gray-50)}
+.ben-option strong{
+  display:block;
+  font-weight:600;
+  color:var(--gray-800);
+  margin-bottom:4px;
+}
+.ben-option small{
+  color:var(--gray-400);
+  font-size:11px;
+}
+
+/* SIGNATORY SECTION - BOTTOM OF PAGE */
+.signatory-section{
+  margin-top:60px;
+  padding-top:30px;
+  border-top:2px solid var(--gray-200);
+  page-break-inside:avoid;
+}
+.signatory-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:30px;
+  margin-top:20px;
+}
+.signatory-item{
+  text-align:center;
+}
+.signatory-role{
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  color:var(--gray-500);
+  margin-bottom:2px;
+}
+.signatory-name{
+  font-size:14px;
+  font-weight:600;
+  color:var(--gray-800);
+  margin-bottom:25px;
+}
+.signature-line{
+  border-top:px dashed var(--gray-400);
+  padding-top:10px;
+  margin-top:2px;
+  font-size:8px;
+  color:var(--gray-500);
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+}
+.signature-line i{
+  font-size:10px;
+  margin-right:4px;
+}
+
+/* BUTTONS */
+.btn-row{display:flex;gap:16px;margin-top:40px}
+.btn-submit{
+  flex:1;
+  padding:14px;
+  background: #519ac3;
+  border:none;
+  border-radius:12px;
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  color:var(--white);
+  cursor:pointer;
+  transition:all 0.2s;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.btn-submit:hover{
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-lg);
+}
+.btn-submit:disabled{
+  opacity:0.6;
+  cursor:not-allowed;
+  transform:none;
+}
+.btn-print{
+  padding:14px 32px;
+  background:var(--gray-100);
+  border:2px solid var(--gray-200);
+  border-radius:12px;
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  font-weight:600;
+  color:background: #519ac3;
+  cursor:pointer;
+  transition:all 0.2s;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.btn-print:hover{
+  background:var(--gray-200);
+  transform:translateY(-2px);
+}
+
+/* RECORDS SECTION */
+.search-box{
+  background:var(--white);
+  border-radius:24px;
+  box-shadow:var(--shadow-lg);
+  padding:32px;
+  margin-bottom:24px;
+}
+.search-box h2{
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:20px;
+  color:var(--gray-800);
+}
+.search-row{display:flex;gap:12px;align-items:center}
+.search-row input{flex:1}
+.btn-search,.btn-clear{
+  padding:12px 24px;
+  border-radius:12px;
+  font-family:'Inter',sans-serif;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.btn-search{
+  background:var(--accent);
+  color:white;
+  border:none;
+}
+.btn-search:hover{background:var(--accent-light);transform:translateY(-2px)}
+.btn-clear{
+  background:var(--gray-100);
+  border:2px solid var(--gray-200);
+  color:var(--gray-700);
+}
+.records-wrap{
+  background:var(--white);
+  border-radius:24px;
+  box-shadow:var(--shadow-lg);
+  overflow:hidden;
+}
+.records-header{
+  padding:20px 28px;
+  background:var(--gray-50);
+  border-bottom:2px solid var(--gray-200);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.records-header h3{font-size:18px;font-weight:700;color:var(--gray-800)}
+.records-count{
+  background:var(--accent);
+  color:white;
+  padding:4px 12px;
+  border-radius:20px;
+  font-size:12px;
+  font-weight:600;
+}
+.table-outer{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+thead th{
+  padding:14px 16px;
+  text-align:left;
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:#519ac3;
+  border-bottom:2px solid var(--gray-200);
+}
+tbody tr{border-bottom:1px solid var(--gray-100);transition:background 0.15s}
+tbody tr:hover{background:var(--gray-50)}
+tbody td{padding:14px 16px;color:var(--gray-700);font-size:13px}
+.btn-view{
+  background:var(--gray-100);
+  border:none;
+  padding:6px 12px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.2s;
+}
+.btn-view:hover{background:var(--accent);color:white}
+
+/* MODAL */
+.modal-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  backdrop-filter:blur(4px);
+  z-index:200;
+  align-items:center;
+  justify-content:center;
+}
+.modal-overlay.open{display:flex}
+.modal{
+  background:var(--white);
+  border-radius:24px;
+  width:90%;
+  max-width:640px;
+  max-height:85vh;
+  overflow-y:auto;
+  box-shadow:var(--shadow-xl);
+}
+.modal-head{
+  padding:24px 28px;
+  background:linear-gradient(135deg, var(--primary), var(--secondary));
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+}
+.modal-head h3{color:white;font-size:20px;font-weight:700}
+.modal-close{
+  background:none;
+  border:none;
+  color:white;
+  font-size:24px;
+  cursor:pointer;
+}
+.modal-body{padding:28px}
+.detail-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+.detail-item{
+  background:var(--gray-50);
+  padding:12px 16px;
+  border-radius:12px;
+}
+.detail-label{
+  font-size:10px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--gray-500);
+  margin-bottom:6px;
+}
+.detail-value{
+  font-size:14px;
+  font-weight:500;
+  color:var(--gray-800);
+}
+.detail-item.full{grid-column:span 2}
+
+/* TOAST */
+#toast{
+  position:fixed;
+  bottom:30px;
+  left:50%;
+  transform:translateX(-50%) translateY(100px);
+  background:var(--gray-800);
+  color:white;
+  padding:14px 28px;
+  border-radius:40px;
+  font-size:14px;
+  font-weight:500;
+  box-shadow:var(--shadow-xl);
+  opacity:0;
+  transition:all 0.3s;
+  z-index:999;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+#toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+#toast.success{background:var(--success)}
+#toast.error{background:var(--error)}
+
+/* ============================================
+   A4 PRINT STYLES - OPTIMIZED FOR BOTTOM SIGNATORY
+   ============================================ */
+@media print{
+  @page{
+    size:A4;
+    margin:15mm 12mm 15mm 12mm;
+  }
+  
+  /* Hide non-print elements */
+  header,nav,.btn-row,#toast,.modal-overlay,.ben-dropdown,
+  .btn-print,.btn-submit,.search-box,.records-wrap{
+    display:none !important;
+  }
+  
+  /* Show form tab */
+  #tab-form{
+    display:block !important;
+  }
+  
+  /* Reset body for print */
+  html,body{
+    background:white !important;
+    padding:0 !important;
+    margin:0 !important;
+    min-height:auto !important;
+  }
+  
+  .page{
+    max-width:100% !important;
+    padding:0 !important;
+    margin:0 !important;
+  }
+  
+  /* Form card as page */
+  .form-card{
+    box-shadow:none !important;
+    border-radius:0 !important;
+    min-height:auto !important;
+    height:auto !important;
+    display:block !important;
+  }
+  
+  /* Header without dark background in print */
+  .form-header{
+    background:white !important;
+    border-bottom:2px solid #e2e8f0 !important;
+    padding:15px 20px !important;
+    break-inside:avoid;
+  }
+  
+  .company-logo{
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  
+  .form-header h1{
+    font-size:18pt !important;
+    color:#1a2332 !important;
+  }
+  
+  .req-badge{
+    background:linear-gradient(135deg, #6366f1, #8183f3) !important;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  
+  /* Form body takes remaining space */
+  .form-body{
+    padding:15px 20px 20px 20px !important;
+  }
+  
+  /* Section titles */
+  .section-title{
+    font-size:9pt !important;
+    margin:20px 0 10px !important;
+    color:#6366f1 !important;
+    -webkit-print-color-adjust:exact;
+    print-color-adjust:exact;
+  }
+  
+  /* Grid layouts */
+  .grid-2,.grid-3{
+    grid-template-columns:1fr 1fr !important;
+    gap:12px !important;
+  }
+  
+  .span-2{
+    grid-column:span 2 !important;
+  }
+  
+  /* Field styling */
+  .field{
+    gap:4px !important;
+  }
+  
+  label{
+    font-size:8pt !important;
+    color:#475569 !important;
+  }
+  
+  /* Inputs become text in print */
+  input,select,textarea{
+    background:transparent !important;
+    border:none !important;
+    border-bottom:1px solid #cbd5e1 !important;
+    border-radius:0 !important;
+    padding:4px 2px !important;
+    font-size:10pt !important;
+    color:#1e293b !important;
+    box-shadow:none !important;
+    min-height:auto !important;
+  }
+  
+  textarea{
+    min-height:auto !important;
+    overflow:visible !important;
+  }
+  
+  input[readonly]{
+    background:transparent !important;
+    font-weight:600 !important;
+  }
+  
+  /* SIGNATORY SECTION - FORCES TO BOTTOM OF PAGE */
+  .signatory-section{
+    margin-top:50px !important;
+    padding-top:20px !important;
+    border-top:2px solid #e2e8f0 !important;
+    position:relative !important;
+    bottom:0 !important;
+    left:0 !important;
+    right:0 !important;
+    break-inside:avoid !important;
+    page-break-inside:avoid !important;
+  }
+  
+  /* Force signatory to bottom using flex */
+  .form-card{
+    display:flex !important;
+    flex-direction:column !important;
+    min-height:100vh !important;
+  }
+  
+  .form-body{
+    flex:1 !important;
+    display:flex !important;
+    flex-direction:column !important;
+  }
+  
+  .signatory-section{
+    margin-top:auto !important;
+    margin-bottom:0 !important;
+  }
+  
+  .signatory-grid{
+    grid-template-columns:repeat(4,1fr) !important;
+    gap:0px !important;
+  }
+  
+  .signatory-role{
+    font-size:8pt !important;
+    color:#64748b !important;
+  }
+  
+  .signatory-name{
+    font-size:9pt !important;
+    font-weight:600 !important;
+    margin-bottom:10px !important;
+  }
+  
+  .signature-line{
+    border-top:1px solid #94a3b8 !important;
+    padding-top:8px !important;
+    font-size:7pt !important;
+  }
+  
+  /* Prevent page breaks inside sections */
+  .grid-2,.grid-3,.signatory-section,.field{
+    page-break-inside:avoid !important;
+    break-inside:avoid !important;
+  }
+}
+
+@media(max-width:768px){
+  body{padding:12px}
+  header{flex-direction:column;gap:12px}
+  .form-header{flex-direction:column;text-align:center;gap:12px}
+  .form-body{padding:24px}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .span-2,.span-3{grid-column:span 1}
+  .signatory-grid{grid-template-columns:1fr 1fr;gap:16px}
+  .search-row{flex-direction:column}
+  .company-brand{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-area">
+    <!-- Company Logo - Replace the src with your actual logo URL -->
+    <img src="assets/DD.png" alt="Logo" class="logo-img" style="height:60px; width:auto; border-radius:12px;"/>
+    <div class="logo-text">
+      <span>Diamond Dent</span>
+      <small>Trading Co</small>
+    </div>
+  </div>
+  <nav>
+    <button class="active" onclick="switchTab('form',this)"><i class="fas fa-plus"></i> New Request</button>
+    <button onclick="switchTab('records',this)"><i class="fas fa-history"></i> Records</button>
+  </nav>
+</header>
+
+<!-- FORM TAB -->
+<div id="tab-form" class="tab-content active">
+  <div class="page">
+    <div class="form-card">
+      <!-- REMOVED DARK BACKGROUND FROM HEADER -->
+      <div class="form-header">
+        <div class="company-brand">
+          <!-- Company Logo - Replace with your actual logo URL -->
+          <img src="assets/DD.png"" alt="Diamond Dent Logo" class="company-logo" style="height:50px; width:auto;"/>
+          <h1><i class="fas fa-receipt"></i> Payment Request</h1>
+        </div>
+        <span class="req-badge" id="badge-req">REQ-000000</span>
+      </div>
+      <div class="form-body">
+        
+        <!-- REQUEST INFO -->
+        <div class="section-title"><i class="fas fa-info-circle"></i> Request Information</div>
+        <div class="grid-2">
+          <div class="field">
+            <label><i class="fas fa-hashtag"></i> Request Number</label>
+            <input type="text" id="requestNumber" readonly placeholder="Auto-generated"/>
+          </div>
+          <div class="field">
+            <label><i class="fas fa-calendar"></i> Date</label>
+            <input type="date" id="date"/>
+          </div>
+        </div>
+
+        <!-- PAYMENT DETAILS -->
+        <div class="section-title"><i class="fas fa-credit-card"></i> Payment Details</div>
+        <div class="grid-2">
+          <div class="field">
+            <label><i class="fas fa-dollar-sign"></i> Total Amount *</label>
+            <input type="number" id="totalAmount" placeholder="0.00" min="0" step="0.01"/>
+          </div>
+          <div class="field">
+            <label><i class="fas fa-globe"></i> Currency *</label>
+            <select id="currency">
+              <option value="">— Select Currency —</option>
+              <option value="SAR">SAR — Saudi Riyal</option>
+              <option value="USD">USD — US Dollar</option>
+              <option value="EUR">EUR — Euro</option>
+              <option value="GBP">GBP — British Pound</option>
+              <option value="AED">AED — UAE Dirham</option>
+            </select>
+          </div>
+          <div class="field span-2">
+            <label><i class="fas fa-comment"></i> Payment Concern *</label>
+            <textarea id="paymentConcern" placeholder="Describe the purpose of this payment..."></textarea>
+          </div>
+          <div class="field span-2">
+            <label><i class="fas fa-sticky-note"></i> Additional Notes</label>
+            <textarea id="anotherNote" placeholder="Any additional notes..."></textarea>
+          </div>
+          <div class="field">
+            <label><i class="fas fa-clock"></i> Payment Terms</label>
+            <select id="paymentTerms">
+              <option value="">Select Terms</option>
+              <option value="100%">100%</option>
+              <option value="50%">50%</option>
+              <option value="Immediate">Immediate</option>
+              <option value="Net 7">Net 7</option>
+              <option value="Net 15">Net 15</option>
+              <option value="Net 30">Net 30</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- BENEFICIARY -->
+        <div class="section-title"><i class="fas fa-user-check"></i> Beneficiary Information</div>
+        <div class="grid-2">
+          <div class="field span-2">
+            <label><i class="fas fa-search"></i> Beneficiary Name * <span id="benLoadStatus" style="font-size:11px;color:var(--gray-400);font-weight:normal"></span></label>
+            <div class="ben-wrap" id="benWrap">
+              <input type="text" id="beneficiarySearch" placeholder="Search existing or type new beneficiary name..." autocomplete="off"
+                     oninput="filterBeneficiaries(this.value)" onfocus="openBenDropdown()" onblur="delayCloseDrop()"/>
+              <div class="ben-dropdown" id="benDropdown">
+                <div class="ben-option" style="color:var(--gray-400);text-align:center">Loading beneficiaries...</div>
+              </div>
+            </div>
+          </div>
+          <div class="field">
+            <label><i class="fas fa-university"></i> Bank Name</label>
+            <input type="text" id="bankName" placeholder="Bank name"/>
+          </div>
+          <div class="field">
+            <label><i class="fas fa-code"></i> IBAN / Account No</label>
+            <input type="text" id="ibanNo" placeholder="IBAN or Account number"/>
+          </div>
+        </div>
+
+        <!-- REQUESTER -->
+        <div class="section-title"><i class="fas fa-user"></i> Requester Details</div>
+        <div class="grid-2">
+          <div class="field">
+            <label><i class="fas fa-signature"></i> Name of Requester *</label>
+            <input type="text" id="requesterName" placeholder="Full name"/>
+          </div>
+          <div class="field">
+            <label><i class="fas fa-briefcase"></i> Position</label>
+            <input type="text" id="position" placeholder="Job title"/>
+          </div>
+        </div>
+
+        <!-- SIGNATORY SECTION - WILL BE AT BOTTOM WHEN PRINTING -->
+        <div class="signatory-section">
+          <div class="section-title"><i class="fas fa-signature"></i> Approval & Signatory</div>
+          <div class="signatory-grid">
+            <div class="signatory-item">
+              <div class="signatory-role">General Accountant</div>
+              <div class="signatory-name">Mohamed Ahmed</div>
+              <div class="signature-line"><i class="fas fa-pen"></i> Signature & Date</div>
+            </div>
+            <div class="signatory-item">
+              <div class="signatory-role">Finance Manager</div>
+              <div class="signatory-name">Mohamed Hashim</div>
+              <div class="signature-line"><i class="fas fa-pen"></i> Signature & Date</div>
+            </div>
+            <div class="signatory-item">
+              <div class="signatory-role">B.Unit Manager</div>
+              <div class="signatory-name">Begad Abu El-Ela</div>
+              <div class="signature-line"><i class="fas fa-pen"></i> Signature & Date</div>
+            </div>
+            <div class="signatory-item">
+              <div class="signatory-role">CEO</div>
+              <div class="signatory-name">Abdulrahman Fawwaz</div>
+              <div class="signature-line"><i class="fas fa-pen"></i> Signature & Date</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-submit" id="btnSubmit" onclick="submitForm()">
+            <i class="fas fa-paper-plane"></i> Submit Payment Request
+          </button>
+          <button class="btn-print" onclick="printForm()">
+            <i class="fas fa-print"></i> Print
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RECORDS TAB -->
+<div id="tab-records" class="tab-content">
+  <div class="page">
+    <div class="search-box">
+      <h2><i class="fas fa-search"></i> Search Records</h2>
+      <div class="search-row">
+        <input type="text" id="searchInput" placeholder="Search by name, request number, amount..." onkeydown="if(event.key==='Enter') searchRecords()"/>
+        <button class="btn-search" onclick="searchRecords()"><i class="fas fa-search"></i> Search</button>
+        <button class="btn-clear" onclick="clearSearch()"><i class="fas fa-times"></i> Clear</button>
+      </div>
+    </div>
+    <div class="records-wrap">
+      <div class="records-header">
+        <h3><i class="fas fa-list"></i> Payment Requests</h3>
+        <span class="records-count" id="recordsCount">—</span>
+      </div>
+      <div class="table-outer">
+        <table>
+          <thead>
+            <tr>
+              <th>Req. No.</th><th>Date</th><th>Beneficiary</th>
+              <th>Amount</th><th>Currency</th><th>Requester</th>
+              <th>Concern</th><th></th>
+            </tr>
+          </thead>
+          <tbody id="recordsBody">
+            <tr><td colspan="8" style="text-align:center;padding:60px"><i class="fas fa-inbox"></i> Load records to see data</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <h3><i class="fas fa-receipt"></i> Request Details</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// CONFIGURATION
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwxsFGasGrnDBUfv-iavj4y5T5ODk-FCBjney_TrNf5OSByQ9OSAPHvr7vpthyyczHnPw/exec";
+
+// STATE
+let beneficiaries = [];
+let filteredBens = [];
+let selectedBen = null;
+let allRecords = [];
+
+// INIT
+document.addEventListener("DOMContentLoaded", () => {
+  setToday();
+  loadBeneficiaries();
+  getNextRequestNumber();
+  document.addEventListener("click", e => {
+    if (!document.getElementById("benWrap").contains(e.target)) closeBenDropdown();
+  });
+});
+
+function setToday() {
+  document.getElementById("date").value = new Date().toISOString().split("T")[0];
+}
+
+// GET SERIAL REQUEST NUMBER FROM SHEET
+async function getNextRequestNumber() {
+  try {
+    console.log("Fetching last request number...");
+    const res = await fetch(`${SCRIPT_URL}?type=getLastRequestNumber`);
+    const json = await res.json();
+    console.log("Server response:", json);
+    
+    let lastNum = 0;
+    if (json.status === "success" && json.lastNumber !== undefined && json.lastNumber !== null) {
+      lastNum = parseInt(json.lastNumber) || 0;
+    }
+    
+    const nextNum = lastNum + 1;
+    const paddedNum = String(nextNum).padStart(6, '0');
+    const reqNum = `REQ-${paddedNum}`;
+    
+    console.log(`Last number: ${lastNum}, Next number: ${nextNum}, Request number: ${reqNum}`);
+    
+    document.getElementById("requestNumber").value = reqNum;
+    document.getElementById("badge-req").textContent = reqNum;
+  } catch (err) {
+    console.error("Error getting request number:", err);
+    const fallback = "REQ-" + Date.now().toString().slice(-6);
+    document.getElementById("requestNumber").value = fallback;
+    document.getElementById("badge-req").textContent = fallback;
+    showToast("Could not get sequential number, using temporary ID", "error");
+  }
+}
+
+// LOAD BENEFICIARIES
+async function loadBeneficiaries() {
+  try {
+    const res = await fetch(`${SCRIPT_URL}?type=beneficiaries`);
+    const json = await res.json();
+    if (json.status === "success" && json.data.length) {
+      beneficiaries = json.data;
+      filteredBens = [...beneficiaries];
+      document.getElementById("benLoadStatus").textContent = `(${beneficiaries.length} saved)`;
+      renderBenOptions(beneficiaries);
+    } else {
+      document.getElementById("benLoadStatus").textContent = "(no beneficiaries)";
+      document.getElementById("benDropdown").innerHTML = `<div class="ben-option" style="color:var(--gray-400);text-align:center">No beneficiaries found</div>`;
+    }
+  } catch (err) {
+    console.error("Error loading beneficiaries:", err);
+    document.getElementById("benLoadStatus").textContent = "(load failed)";
+  }
+}
+
+function renderBenOptions(list) {
+  const dd = document.getElementById("benDropdown");
+  if (!list.length) {
+    dd.innerHTML = `<div class="ben-option" style="color:var(--gray-400);text-align:center"><i class="fas fa-info-circle"></i> No matches found</div>`;
+    return;
+  }
+  dd.innerHTML = list.map((b, i) => `
+    <div class="ben-option" onmousedown="selectBeneficiary(${i})">
+      <strong>${escapeHtml(b.name)}</strong>
+      <small>${escapeHtml(b.bankName || '')} · ${escapeHtml(b.iban || '')}</small>
+    </div>
+  `).join("");
+}
+
+function filterBeneficiaries(q) {
+  openBenDropdown();
+  selectedBen = null;
+  
+  if (!q.trim()) {
+    filteredBens = [...beneficiaries];
+  } else {
+    const lower = q.toLowerCase();
+    filteredBens = beneficiaries.filter(b =>
+      b.name.toLowerCase().includes(lower) ||
+      (b.iban || "").toLowerCase().includes(lower) ||
+      (b.bankName || "").toLowerCase().includes(lower)
+    );
+  }
+  renderBenOptions(filteredBens);
+}
+
+function selectBeneficiary(idx) {
+  const ben = filteredBens[idx];
+  if (!ben) return;
+  selectedBen = ben;
+  document.getElementById("beneficiarySearch").value = ben.name;
+  document.getElementById("bankName").value = ben.bankName || "";
+  document.getElementById("ibanNo").value = ben.iban || "";
+  closeBenDropdown();
+}
+
+function openBenDropdown() {
+  document.getElementById("benDropdown").classList.add("open");
+}
+
+function closeBenDropdown() {
+  document.getElementById("benDropdown").classList.remove("open");
+}
+
+function delayCloseDrop() {
+  setTimeout(closeBenDropdown, 200);
+}
+
+// SUBMIT FORM
+async function submitForm() {
+  const required = [
+    { id: "totalAmount", label: "Total Amount" },
+    { id: "currency", label: "Currency" },
+    { id: "paymentConcern", label: "Payment Concern" },
+    { id: "requesterName", label: "Requester Name" }
+  ];
+  
+  for (const req of required) {
+    if (!document.getElementById(req.id).value.trim()) {
+      showToast(`Please fill in: ${req.label}`, "error");
+      return;
+    }
+  }
+  
+  const benName = document.getElementById("beneficiarySearch").value.trim();
+  if (!benName) {
+    showToast("Please enter or select a Beneficiary", "error");
+    return;
+  }
+  
+  const btn = document.getElementById("btnSubmit");
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+  
+  const existingBen = beneficiaries.find(b => b.name.toLowerCase() === benName.toLowerCase());
+  const isNewBen = !existingBen;
+  
+  const payload = {
+    requestNumber: document.getElementById("requestNumber").value,
+    date: document.getElementById("date").value,
+    totalAmount: document.getElementById("totalAmount").value,
+    currency: document.getElementById("currency").value,
+    paymentConcern: document.getElementById("paymentConcern").value,
+    anotherNote: document.getElementById("anotherNote").value,
+    paymentTerms: document.getElementById("paymentTerms").value,
+    beneficiaryName: benName,
+    bankName: document.getElementById("bankName").value,
+    ibanNo: document.getElementById("ibanNo").value,
+    requesterName: document.getElementById("requesterName").value,
+    position: document.getElementById("position").value,
+    isNewBeneficiary: isNewBen
+  };
+  
+  try {
+    const res = await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(payload) });
+    const json = await res.json();
+    
+    if (json.status === "success") {
+      showToast(isNewBen ? "✓ New beneficiary added & request submitted!" : "✓ Payment request submitted!", "success");
+      resetForm();
+      await loadBeneficiaries();
+      await getNextRequestNumber();
+    } else {
+      showToast("Error: " + json.message, "error");
+    }
+  } catch (err) {
+    console.error("Submit error:", err);
+    showToast("Network error. Check connection.", "error");
+  }
+  
+  btn.disabled = false;
+  btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Payment Request';
+}
+
+function resetForm() {
+  document.getElementById("totalAmount").value = "";
+  document.getElementById("currency").value = "";
+  document.getElementById("paymentConcern").value = "";
+  document.getElementById("anotherNote").value = "";
+  document.getElementById("paymentTerms").value = "";
+  document.getElementById("bankName").value = "";
+  document.getElementById("ibanNo").value = "";
+  document.getElementById("beneficiarySearch").value = "";
+  document.getElementById("requesterName").value = "";
+  document.getElementById("position").value = "";
+  selectedBen = null;
+  setToday();
+}
+
+function switchTab(tab, btn) {
+  document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
+  document.querySelectorAll("nav button").forEach(el => el.classList.remove("active"));
+  document.getElementById("tab-" + tab).classList.add("active");
+  btn.classList.add("active");
+  if (tab === "records") loadRecords();
+}
+
+async function loadRecords(query = "") {
+  const tbody = document.getElementById("recordsBody");
+  tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>`;
+  
+  try {
+    const url = `${SCRIPT_URL}?type=records${query ? "&q=" + encodeURIComponent(query) : ""}`;
+    const res = await fetch(url);
+    const json = await res.json();
+    
+    if (json.status === "success") {
+      allRecords = json.data;
+      renderTable(json.data);
+    } else {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px">Error: ${json.message}</td></tr>`;
+    }
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px"><i class="fas fa-exclamation-triangle"></i> Could not connect to server</td></tr>`;
+  }
+}
+
+function renderTable(data) {
+  const tbody = document.getElementById("recordsBody");
+  document.getElementById("recordsCount").textContent = data.length + " record(s)";
+  
+  if (!data.length) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:60px"><i class="fas fa-inbox"></i> No records found</td></tr>`;
+    return;
+  }
+  
+  tbody.innerHTML = data.map((r, i) => `
+    <tr>
+      <td style="font-weight:600;color:var(--accent)">${escapeHtml(r["Request Number"] || "-")}</td>
+      <td>${escapeHtml(r["Date"] || "-")}</td>
+      <td>${escapeHtml(r["Beneficiary Name"] || "-")}</td>
+      <td style="font-weight:600">${r["Total Amount"] ? Number(r["Total Amount"]).toLocaleString() : "-"}</td>
+      <td>${escapeHtml(r["Currency"] || "-")}</td>
+      <td>${escapeHtml(r["Requester Name"] || "-")}</td>
+      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(r["Payment Concern"] || "-")}</td>
+      <td><button class="btn-view" onclick="showDetail(${i})"><i class="fas fa-eye"></i> View</button></td>
+    </tr>
+  `).join("");
+}
+
+function searchRecords() {
+  loadRecords(document.getElementById("searchInput").value.trim());
+}
+
+function clearSearch() {
+  document.getElementById("searchInput").value = "";
+  loadRecords();
+}
+
+function showDetail(idx) {
+  const r = allRecords[idx];
+  document.getElementById("modalTitle").innerHTML = `<i class="fas fa-receipt"></i> Request #${escapeHtml(r["Request Number"] || "-")}`;
+  document.getElementById("modalBody").innerHTML = `
+    <div class="detail-grid">
+      <div class="detail-item"><div class="detail-label">Request Number</div><div class="detail-value">${escapeHtml(r["Request Number"] || "-")}</div></div>
+      <div class="detail-item"><div class="detail-label">Date</div><div class="detail-value">${escapeHtml(r["Date"] || "-")}</div></div>
+      <div class="detail-item"><div class="detail-label">Total Amount</div><div class="detail-value">${r["Total Amount"] ? Number(r["Total Amount"]).toLocaleString() : "-"} ${escapeHtml(r["Currency"] || "")}</div></div>
+      <div class="detail-item"><div class="detail-label">Payment Terms</div><div class="detail-value">${escapeHtml(r["Payment Terms"] || "-")}</div></div>
+      <div class="detail-item full"><div class="detail-label">Payment Concern</div><div class="detail-value">${escapeHtml(r["Payment Concern"] || "-")}</div></div>
+      <div class="detail-item full"><div class="detail-label">Additional Notes</div><div class="detail-value">${escapeHtml(r["Another Note"] || "-")}</div></div>
+      <div class="detail-item"><div class="detail-label">Beneficiary Name</div><div class="detail-value">${escapeHtml(r["Beneficiary Name"] || "-")}</div></div>
+      <div class="detail-item"><div class="detail-label">Bank Name</div><div class="detail-value">${escapeHtml(r["Bank Name"] || "-")}</div></div>
+      <div class="detail-item full"><div class="detail-label">IBAN No</div><div class="detail-value">${escapeHtml(r["IBAN No"] || "-")}</div></div>
+      <div class="detail-item"><div class="detail-label">Requester Name</div><div class="detail-value">${escapeHtml(r["Requester Name"] || "-")}</div></div>
+      <div class="detail-item"><div class="detail-label">Position</div><div class="detail-value">${escapeHtml(r["Position"] || "-")}</div></div>
+      <div class="detail-item full"><div class="detail-label">Submitted At</div><div class="detail-value">${escapeHtml(r["Submitted At"] || r["Timestamp"] || "-")}</div></div>
+    </div>
+  `;
+  document.getElementById("modalOverlay").classList.add("open");
+}
+
+function closeModal(e) {
+  if (!e || e.target === document.getElementById("modalOverlay"))
+    document.getElementById("modalOverlay").classList.remove("open");
+}
+
+function printForm() {
+  document.getElementById("tab-form").style.display = "block";
+  window.print();
+}
+
+function showToast(msg, type = "") {
+  const t = document.getElementById("toast");
+  t.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
+  t.className = "show " + type;
+  setTimeout(() => { t.className = ""; }, 3500);
+}
+
+function escapeHtml(str) {
+  if (!str) return "";
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
+}
+</script>
+</body>
+</html>
