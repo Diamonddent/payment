@@ -760,7 +760,7 @@ tbody td{padding:14px 16px;color:var(--gray-700);font-size:13px}
       <div class="form-header">
         <div class="company-brand">
           <!-- Company Logo - Replace with your actual logo URL -->
-          <img src="assets/DD.png"" alt="Diamond Dent Logo" class="company-logo" style="height:50px; width:auto;"/>
+          <img src="assets/DD.png" alt="Diamond Dent Logo" class="company-logo" style="height:50px; width:auto;"/>
           <h1><i class="fas fa-receipt"></i> Payment Request</h1>
         </div>
         <span class="req-badge" id="badge-req">REQ-000000</span>
@@ -838,7 +838,7 @@ tbody td{padding:14px 16px;color:var(--gray-700);font-size:13px}
             <input type="text" id="bankName" placeholder="Bank name"/>
           </div>
           <div class="field">
-            <label><i class="fas fa-code"></i> IBAN / Account No</label>
+            <label><i class="fas fa-code"></i>IBAN / Account No</label>
             <input type="text" id="ibanNo" placeholder="IBAN or Account number"/>
           </div>
         </div>
@@ -934,7 +934,7 @@ tbody td{padding:14px 16px;color:var(--gray-700);font-size:13px}
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal">
     <div class="modal-head">
-      <h3><i class="fas fa-receipt"></i> Request Details</h3>
+      <h3 id="modalTitle"><i class="fas fa-receipt"></i> Request Details</h3>
       <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
     <div class="modal-body" id="modalBody"></div>
@@ -1006,7 +1006,7 @@ async function loadBeneficiaries() {
       beneficiaries = json.data;
       filteredBens = [...beneficiaries];
       document.getElementById("benLoadStatus").textContent = `(${beneficiaries.length} saved)`;
-      renderBenOptions(beneficiaries);
+      renderBenOptions(beneficiaries, "");
     } else {
       document.getElementById("benLoadStatus").textContent = "(no beneficiaries)";
       document.getElementById("benDropdown").innerHTML = `<div class="ben-option" style="color:var(--gray-400);text-align:center">No beneficiaries found</div>`;
@@ -1017,12 +1017,26 @@ async function loadBeneficiaries() {
   }
 }
 
-function renderBenOptions(list) {
+// UPDATED: renderBenOptions with searchText parameter for "Create New" option
+function renderBenOptions(list, searchText = "") {
   const dd = document.getElementById("benDropdown");
-  if (!list.length) {
-    dd.innerHTML = `<div class="ben-option" style="color:var(--gray-400);text-align:center"><i class="fas fa-info-circle"></i> No matches found</div>`;
+  
+  // If no matches found AND user is searching for something - show "Create New" option
+  if (!list.length && searchText.trim()) {
+    dd.innerHTML = `<div class="ben-option" onmousedown="createNewBeneficiary('${escapeHtml(searchText)}')">
+      <strong><i class="fas fa-plus-circle"></i> Create New: "${escapeHtml(searchText)}"</strong>
+      <small>Click to add as new beneficiary</small>
+    </div>`;
     return;
   }
+  
+  // If no matches and no search text (empty list)
+  if (!list.length) {
+    dd.innerHTML = `<div class="ben-option" style="color:var(--gray-400);text-align:center"><i class="fas fa-info-circle"></i> No beneficiaries found</div>`;
+    return;
+  }
+  
+  // Show matching beneficiaries
   dd.innerHTML = list.map((b, i) => `
     <div class="ben-option" onmousedown="selectBeneficiary(${i})">
       <strong>${escapeHtml(b.name)}</strong>
@@ -1031,12 +1045,25 @@ function renderBenOptions(list) {
   `).join("");
 }
 
+// NEW FUNCTION: Create new beneficiary from search text
+function createNewBeneficiary(name) {
+  document.getElementById("beneficiarySearch").value = name;
+  document.getElementById("bankName").value = "";
+  document.getElementById("ibanNo").value = "";
+  selectedBen = null;
+  closeBenDropdown();
+  showToast(`Enter bank details for "${name}"`, "success");
+  document.getElementById("bankName").focus();
+}
+
+// UPDATED: filterBeneficiaries with searchText parameter
 function filterBeneficiaries(q) {
   openBenDropdown();
   selectedBen = null;
   
   if (!q.trim()) {
     filteredBens = [...beneficiaries];
+    renderBenOptions(filteredBens, "");
   } else {
     const lower = q.toLowerCase();
     filteredBens = beneficiaries.filter(b =>
@@ -1044,8 +1071,8 @@ function filterBeneficiaries(q) {
       (b.iban || "").toLowerCase().includes(lower) ||
       (b.bankName || "").toLowerCase().includes(lower)
     );
+    renderBenOptions(filteredBens, q);
   }
-  renderBenOptions(filteredBens);
 }
 
 function selectBeneficiary(idx) {
