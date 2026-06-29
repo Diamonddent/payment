@@ -739,7 +739,6 @@ tbody td{padding:14px 16px;color:var(--gray-700);font-size:13px}
 
 <header>
   <div class="logo-area">
-    <!-- Company Logo - Replace the src with your actual logo URL -->
     <img src="assets/DD.png" alt="Logo" class="logo-img" style="height:60px; width:auto; border-radius:12px;"/>
     <div class="logo-text">
       <span>Diamond Dent</span>
@@ -752,14 +751,11 @@ tbody td{padding:14px 16px;color:var(--gray-700);font-size:13px}
   </nav>
 </header>
 
-<!-- FORM TAB -->
 <div id="tab-form" class="tab-content active">
   <div class="page">
     <div class="form-card">
-      <!-- REMOVED DARK BACKGROUND FROM HEADER -->
       <div class="form-header">
         <div class="company-brand">
-          <!-- Company Logo - Replace with your actual logo URL -->
           <img src="assets/DD.png" alt="Diamond Dent Logo" class="company-logo" style="height:50px; width:auto;"/>
           <h1><i class="fas fa-receipt"></i> Payment Request</h1>
         </div>
@@ -767,7 +763,6 @@ tbody td{padding:14px 16px;color:var(--gray-700);font-size:13px}
       </div>
       <div class="form-body">
         
-        <!-- REQUEST INFO -->
         <div class="section-title"><i class="fas fa-info-circle"></i> Request Information</div>
         <div class="grid-2">
           <div class="field">
@@ -780,12 +775,11 @@ tbody td{padding:14px 16px;color:var(--gray-700);font-size:13px}
           </div>
         </div>
 
-        <!-- PAYMENT DETAILS -->
         <div class="section-title"><i class="fas fa-credit-card"></i> Payment Details</div>
         <div class="grid-2">
           <div class="field">
             <label><i class="fas fa-dollar-sign"></i> Total Amount *</label>
-            <input type="number" id="totalAmount" placeholder="0.00" min="0" step="0.01"/>
+            <input type="text" id="totalAmount" placeholder="0.00" oninput="formatAmountOnInput(this)" onblur="formatAmountOnBlur(this)"/>
           </div>
           <div class="field">
             <label><i class="fas fa-globe"></i> Currency *</label>
@@ -820,7 +814,6 @@ tbody td{padding:14px 16px;color:var(--gray-700);font-size:13px}
           </div>
         </div>
 
-        <!-- BENEFICIARY -->
         <div class="section-title"><i class="fas fa-user-check"></i> Beneficiary Information</div>
         <div class="grid-2">
           <div class="field span-2">
@@ -843,7 +836,6 @@ tbody td{padding:14px 16px;color:var(--gray-700);font-size:13px}
           </div>
         </div>
 
-        <!-- REQUESTER -->
         <div class="section-title"><i class="fas fa-user"></i> Requester Details</div>
         <div class="grid-2">
           <div class="field">
@@ -856,7 +848,6 @@ tbody td{padding:14px 16px;color:var(--gray-700);font-size:13px}
           </div>
         </div>
 
-        <!-- SIGNATORY SECTION - WILL BE AT BOTTOM WHEN PRINTING -->
         <div class="signatory-section">
           <div class="section-title"><i class="fas fa-signature"></i> Approval & Signatory</div>
           <div class="signatory-grid">
@@ -896,7 +887,6 @@ tbody td{padding:14px 16px;color:var(--gray-700);font-size:13px}
   </div>
 </div>
 
-<!-- RECORDS TAB -->
 <div id="tab-records" class="tab-content">
   <div class="page">
     <div class="search-box">
@@ -930,7 +920,6 @@ tbody td{padding:14px 16px;color:var(--gray-700);font-size:13px}
   </div>
 </div>
 
-<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal">
     <div class="modal-head">
@@ -965,6 +954,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function setToday() {
   document.getElementById("date").value = new Date().toISOString().split("T")[0];
+}
+
+// FORMATTING FUNCTIONS FOR TOTAL AMOUNT FIELD
+function formatAmountOnInput(input) {
+  let value = input.value.replace(/[^0-9.]/g, '');
+  let parts = value.split('.');
+  if (parts.length > 2) parts = [parts[0], parts.slice(1).join('')];
+  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  if (parts[1] !== undefined) parts[1] = parts[1].substring(0, 2);
+  input.value = parts.join('.');
+}
+
+function formatAmountOnBlur(input) {
+  let value = input.value.replace(/,/g, '');
+  if (!value || isNaN(value)) return;
+  let num = parseFloat(value);
+  input.value = num.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 // GET SERIAL REQUEST NUMBER FROM SHEET
@@ -1126,10 +1132,13 @@ async function submitForm() {
   const existingBen = beneficiaries.find(b => b.name.toLowerCase() === benName.toLowerCase());
   const isNewBen = !existingBen;
   
+  // Clean commas out before constructing raw numeric payload for backend spreadsheet storage
+  const cleanAmount = document.getElementById("totalAmount").value.replace(/,/g, '');
+  
   const payload = {
     requestNumber: document.getElementById("requestNumber").value,
     date: document.getElementById("date").value,
-    totalAmount: document.getElementById("totalAmount").value,
+    totalAmount: cleanAmount,
     currency: document.getElementById("currency").value,
     paymentConcern: document.getElementById("paymentConcern").value,
     anotherNote: document.getElementById("anotherNote").value,
@@ -1152,15 +1161,15 @@ async function submitForm() {
       await loadBeneficiaries();
       await getNextRequestNumber();
     } else {
-      showToast("Error: " + json.message, "error");
+      showToast("Submission failed: " + json.message, "error");
     }
   } catch (err) {
-    console.error("Submit error:", err);
-    showToast("Network error. Check connection.", "error");
+    console.error("Submission error:", err);
+    showToast("Server communication error", "error");
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Payment Request';
   }
-  
-  btn.disabled = false;
-  btn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Payment Request';
 }
 
 function resetForm() {
@@ -1169,122 +1178,37 @@ function resetForm() {
   document.getElementById("paymentConcern").value = "";
   document.getElementById("anotherNote").value = "";
   document.getElementById("paymentTerms").value = "";
+  document.getElementById("beneficiarySearch").value = "";
   document.getElementById("bankName").value = "";
   document.getElementById("ibanNo").value = "";
-  document.getElementById("beneficiarySearch").value = "";
   document.getElementById("requesterName").value = "";
   document.getElementById("position").value = "";
   selectedBen = null;
   setToday();
 }
 
-function switchTab(tab, btn) {
-  document.querySelectorAll(".tab-content").forEach(el => el.classList.remove("active"));
-  document.querySelectorAll("nav button").forEach(el => el.classList.remove("active"));
-  document.getElementById("tab-" + tab).classList.add("active");
-  btn.classList.add("active");
-  if (tab === "records") loadRecords();
+function switchTab(tabId, btn) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(`tab-${tabId}`).classList.add('active');
+  btn.classList.add('active');
+  if(tabId === 'records') loadRecords();
 }
 
-async function loadRecords(query = "") {
-  const tbody = document.getElementById("recordsBody");
-  tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>`;
-  
-  try {
-    const url = `${SCRIPT_URL}?type=records${query ? "&q=" + encodeURIComponent(query) : ""}`;
-    const res = await fetch(url);
-    const json = await res.json();
-    
-    if (json.status === "success") {
-      allRecords = json.data;
-      renderTable(json.data);
-    } else {
-      tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px">Error: ${json.message}</td></tr>`;
-    }
-  } catch (err) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:40px"><i class="fas fa-exclamation-triangle"></i> Could not connect to server</td></tr>`;
-  }
-}
-
-function renderTable(data) {
-  const tbody = document.getElementById("recordsBody");
-  document.getElementById("recordsCount").textContent = data.length + " record(s)";
-  
-  if (!data.length) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;padding:60px"><i class="fas fa-inbox"></i> No records found</td></tr>`;
-    return;
-  }
-  
-  tbody.innerHTML = data.map((r, i) => `
-    <tr>
-      <td style="font-weight:600;color:var(--accent)">${escapeHtml(r["Request Number"] || "-")}</td>
-      <td>${escapeHtml(r["Date"] || "-")}</td>
-      <td>${escapeHtml(r["Beneficiary Name"] || "-")}</td>
-      <td style="font-weight:600">${r["Total Amount"] ? Number(r["Total Amount"]).toLocaleString() : "-"}</td>
-      <td>${escapeHtml(r["Currency"] || "-")}</td>
-      <td>${escapeHtml(r["Requester Name"] || "-")}</td>
-      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(r["Payment Concern"] || "-")}</td>
-      <td><button class="btn-view" onclick="showDetail(${i})"><i class="fas fa-eye"></i> View</button></td>
-    </tr>
-  `).join("");
-}
-
-function searchRecords() {
-  loadRecords(document.getElementById("searchInput").value.trim());
-}
-
-function clearSearch() {
-  document.getElementById("searchInput").value = "";
-  loadRecords();
-}
-
-function showDetail(idx) {
-  const r = allRecords[idx];
-  document.getElementById("modalTitle").innerHTML = `<i class="fas fa-receipt"></i> Request #${escapeHtml(r["Request Number"] || "-")}`;
-  document.getElementById("modalBody").innerHTML = `
-    <div class="detail-grid">
-      <div class="detail-item"><div class="detail-label">Request Number</div><div class="detail-value">${escapeHtml(r["Request Number"] || "-")}</div></div>
-      <div class="detail-item"><div class="detail-label">Date</div><div class="detail-value">${escapeHtml(r["Date"] || "-")}</div></div>
-      <div class="detail-item"><div class="detail-label">Total Amount</div><div class="detail-value">${r["Total Amount"] ? Number(r["Total Amount"]).toLocaleString() : "-"} ${escapeHtml(r["Currency"] || "")}</div></div>
-      <div class="detail-item"><div class="detail-label">Payment Terms</div><div class="detail-value">${escapeHtml(r["Payment Terms"] || "-")}</div></div>
-      <div class="detail-item full"><div class="detail-label">Payment Concern</div><div class="detail-value">${escapeHtml(r["Payment Concern"] || "-")}</div></div>
-      <div class="detail-item full"><div class="detail-label">Additional Notes</div><div class="detail-value">${escapeHtml(r["Another Note"] || "-")}</div></div>
-      <div class="detail-item"><div class="detail-label">Beneficiary Name</div><div class="detail-value">${escapeHtml(r["Beneficiary Name"] || "-")}</div></div>
-      <div class="detail-item"><div class="detail-label">Bank Name</div><div class="detail-value">${escapeHtml(r["Bank Name"] || "-")}</div></div>
-      <div class="detail-item full"><div class="detail-label">IBAN No</div><div class="detail-value">${escapeHtml(r["IBAN No"] || "-")}</div></div>
-      <div class="detail-item"><div class="detail-label">Requester Name</div><div class="detail-value">${escapeHtml(r["Requester Name"] || "-")}</div></div>
-      <div class="detail-item"><div class="detail-label">Position</div><div class="detail-value">${escapeHtml(r["Position"] || "-")}</div></div>
-      <div class="detail-item full"><div class="detail-label">Submitted At</div><div class="detail-value">${escapeHtml(r["Submitted At"] || r["Timestamp"] || "-")}</div></div>
-    </div>
-  `;
-  document.getElementById("modalOverlay").classList.add("open");
-}
-
-function closeModal(e) {
-  if (!e || e.target === document.getElementById("modalOverlay"))
-    document.getElementById("modalOverlay").classList.remove("open");
-}
-
-function printForm() {
-  document.getElementById("tab-form").style.display = "block";
-  window.print();
-}
-
-function showToast(msg, type = "") {
+function showToast(msg, type) {
   const t = document.getElementById("toast");
-  t.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${msg}`;
-  t.className = "show " + type;
-  setTimeout(() => { t.className = ""; }, 3500);
+  t.textContent = msg;
+  t.className = `show ${type}`;
+  setTimeout(() => t.className = "", 3000);
 }
 
 function escapeHtml(str) {
-  if (!str) return "";
-  return str.replace(/[&<>]/g, function(m) {
-    if (m === '&') return '&amp;';
-    if (m === '<') return '&lt;';
-    if (m === '>') return '&gt;';
-    return m;
-  });
+  if(!str) return '';
+  return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+function printForm() {
+  window.print();
 }
 </script>
 </body>
